@@ -380,11 +380,22 @@ for (let i = 0; i < 12; i++) setTimeout(createEmoji, i * 500);
 setInterval(createEmoji, 1500);
 
 const audio = document.getElementById("bgMusic");
+audio.volume = 0.5;
 let playing = false;
 function toggleMusic() {
-  if (playing) { audio.pause(); } else { audio.play(); }
-  playing = !playing;
-  document.getElementById("musicLabel").textContent = playing ? "Slide Away ♪" : "poné play";
+  if (playing) {
+    audio.pause();
+    playing = false;
+    document.getElementById("musicLabel").textContent = "poné play";
+  } else {
+    audio.play().then(function() {
+      playing = true;
+      document.getElementById("musicLabel").textContent = "Slide Away ♪";
+    }).catch(function(e) {
+      console.log("Audio error:", e);
+      document.getElementById("musicLabel").textContent = "error ✕";
+    });
+  }
 }
 
 function revealMessage() {
